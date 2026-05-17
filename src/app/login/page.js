@@ -8,11 +8,7 @@ function LoginContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [showManual, setShowManual] = useState(false)
-  const [apiUrl, setApiUrlState] = useState(
-    typeof window !== 'undefined'
-      ? process.env.NEXT_PUBLIC_DEFAULT_API_URL || ''
-      : ''
-  )
+  const [apiUrl, setApiUrlState] = useState('')
   const [apiKey, setApiKey] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -47,7 +43,7 @@ function LoginContent() {
   }
 
   function handleDiscordLogin() {
-    const base = apiUrl.replace(/\/+$/, '') || process.env.NEXT_PUBLIC_DEFAULT_API_URL
+    const base = apiUrl.replace(/\/+$/, '')
     if (!base) {
       setError('Set your API URL first, or use manual login.')
       return
@@ -72,7 +68,7 @@ function LoginContent() {
             type="text"
             value={apiUrl}
             onChange={(e) => setApiUrlState(e.target.value)}
-            placeholder="http://192.168.0.24:4000"
+            placeholder="https://api.example.com"
             className="w-full bg-stone-700 text-stone-100 px-3 py-2 rounded border border-stone-600 focus:border-primary-500 outline-none placeholder-stone-500"
           />
         </div>
