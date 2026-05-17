@@ -48,7 +48,7 @@ export default function LoginPage() {
             value={apiUrl}
             onChange={(e) => setApiUrl(e.target.value)}
             placeholder="http://192.168.0.24:4000"
-            className="w-full bg-slate-700 text-slate-100 px-3 py-2 rounded border border-slate-600 focus:border-blue-500 outline-none placeholder-slate-500"
+            className="w-full bg-slate-700 text-slate-100 px-3 py-2 rounded border border-slate-600 focus:border-primary-500 outline-none placeholder-slate-500"
           />
         </div>
 
@@ -59,7 +59,7 @@ export default function LoginPage() {
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="Enter your API key"
-            className="w-full bg-slate-700 text-slate-100 px-3 py-2 rounded border border-slate-600 focus:border-blue-500 outline-none placeholder-slate-500"
+            className="w-full bg-slate-700 text-slate-100 px-3 py-2 rounded border border-slate-600 focus:border-primary-500 outline-none placeholder-slate-500"
           />
         </div>
 
@@ -68,7 +68,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-medium disabled:opacity-50 transition-colors"
+          className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 rounded font-medium disabled:opacity-50 transition-colors"
         >
           {loading ? 'Connecting...' : 'Connect'}
         </button>

@@ -95,7 +95,7 @@ export default function LogViewer({ botId, apiUrl, apiKey }) {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-2 py-0.5 text-xs rounded capitalize ${
-                filter === f ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                filter === f ? 'bg-primary-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
               } transition-colors`}
             >
               {f}

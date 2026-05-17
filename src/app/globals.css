@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --accent: #dc2626;
+  --accent-hover: #b91c1c;
+  --accent-light: #ef4444;
+  --accent-subtle: #f87171;
+}

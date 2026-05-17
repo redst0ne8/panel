@@ -23,7 +23,7 @@ export default function BotCard({ bot }) {
   return (
     <Link
       href={`/bots/${encodeURIComponent(bot.id)}`}
-      className="block bg-slate-800 rounded-lg p-5 border border-slate-700 hover:border-blue-500 transition-colors"
+      className="block bg-slate-800 rounded-lg p-5 border border-slate-700 hover:border-primary-500 transition-colors"
     >
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-slate-100 font-semibold truncate">{bot.id}</h3>
