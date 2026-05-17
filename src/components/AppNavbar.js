@@ -21,15 +21,15 @@ export default function AppNavbar() {
   }
 
   return (
-    <nav className="bg-slate-900 border-b border-slate-700 px-8 py-3 flex items-center justify-between shrink-0">
+    <nav className="bg-stone-900 border-b border-stone-700 px-8 py-3 flex items-center justify-between shrink-0">
       <a
         href={isLoggedIn ? '/dashboard' : '/login'}
-        className="text-xl font-bold text-slate-100 hover:text-primary-400 transition-colors"
+        className="text-xl font-bold text-stone-100 hover:text-primary-400 transition-colors"
       >
         Bot Dashboard
       </a>
       {isLoggedIn && pathname !== '/login' && (
-        <button onClick={handleLogout} className="text-sm text-slate-400 hover:text-red-400 transition-colors">
+        <button onClick={handleLogout} className="text-sm text-stone-400 hover:text-red-400 transition-colors">
           Logout
         </button>
       )}

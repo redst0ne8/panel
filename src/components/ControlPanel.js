@@ -39,8 +39,8 @@ export default function ControlPanel({ botId, status, onAction, vertical }) {
   }
 
   return (
-    <div className="bg-slate-800 rounded-lg border border-slate-700 p-5 flex flex-col">
-      <p className="text-xs text-slate-400 mb-4 font-medium uppercase tracking-wider">Actions</p>
+    <div className="bg-stone-800 rounded-lg border border-stone-700 p-5 flex flex-col">
+      <p className="text-xs text-stone-400 mb-4 font-medium uppercase tracking-wider">Actions</p>
       <div className={`flex ${vertical ? 'flex-col' : 'flex-row'} gap-2`}>
         {actions.map((action) => (
           <button

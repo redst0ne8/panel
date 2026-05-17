@@ -8,7 +8,7 @@ const colors = {
 export default function BotStatusBadge({ status }) {
   return (
     <span
-      className={`inline-block w-2.5 h-2.5 rounded-full ${colors[status] || 'bg-slate-500'}`}
+      className={`inline-block w-2.5 h-2.5 rounded-full ${colors[status] || 'bg-stone-500'}`}
       title={status}
     />
   )

@@ -9,7 +9,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="h-screen overflow-hidden bg-slate-950 text-slate-100 flex flex-col">
+      <body className="h-screen overflow-hidden bg-stone-950 text-stone-100 flex flex-col">
         <AppNavbar />
         {children}
       </body>

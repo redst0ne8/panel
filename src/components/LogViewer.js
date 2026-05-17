@@ -87,15 +87,15 @@ export default function LogViewer({ botId, apiUrl, apiKey }) {
   }
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 rounded-lg border border-slate-700 overflow-hidden">
-      <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 shrink-0 flex-wrap">
+    <div className="flex flex-col flex-1 min-h-0 rounded-lg border border-stone-700 overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-2.5 bg-stone-800 shrink-0 flex-wrap">
         <div className="flex gap-1">
           {['all', 'stdout', 'stderr'].map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
               className={`px-2 py-0.5 text-xs rounded capitalize ${
-                filter === f ? 'bg-primary-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                filter === f ? 'bg-primary-600 text-white' : 'bg-stone-700 text-stone-300 hover:bg-stone-600'
               } transition-colors`}
             >
               {f}
@@ -105,30 +105,30 @@ export default function LogViewer({ botId, apiUrl, apiKey }) {
         <button
           onClick={() => setAutoScroll(!autoScroll)}
           className={`px-2 py-0.5 text-xs rounded transition-colors ${
-            autoScroll ? 'bg-slate-700 text-slate-300' : 'bg-slate-600 text-slate-400'
+            autoScroll ? 'bg-stone-700 text-stone-300' : 'bg-stone-600 text-stone-400'
           }`}
         >
           Scroll: {autoScroll ? 'ON' : 'OFF'}
         </button>
         <button
           onClick={() => setLogs([])}
-          className="px-2 py-0.5 text-xs rounded bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors"
+          className="px-2 py-0.5 text-xs rounded bg-stone-700 text-stone-300 hover:bg-stone-600 transition-colors"
         >
           Clear
         </button>
         <button
           onClick={handleReload}
-          className="px-2 py-0.5 text-xs rounded bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors"
+          className="px-2 py-0.5 text-xs rounded bg-stone-700 text-stone-300 hover:bg-stone-600 transition-colors"
         >
           Reload
         </button>
-        <span className="text-xs text-slate-500 ml-auto">{logs.length} lines</span>
+        <span className="text-xs text-stone-500 ml-auto">{logs.length} lines</span>
       </div>
 
       <div className="flex-1 min-h-0 bg-black p-4 overflow-y-auto font-mono text-xs leading-relaxed">
-        {loading && <p className="text-slate-500">Loading logs...</p>}
+        {loading && <p className="text-stone-500">Loading logs...</p>}
         {filtered.map((line, i) => (
-          <div key={i} className={line.type === 'stderr' ? 'text-red-400' : 'text-slate-300'}>
+          <div key={i} className={line.type === 'stderr' ? 'text-red-400' : 'text-stone-300'}>
             {line.text}
           </div>
         ))}

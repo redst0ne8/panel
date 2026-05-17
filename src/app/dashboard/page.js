@@ -30,15 +30,15 @@ export default function DashboardPage() {
   }, [fetchData])
 
   if (loading) {
-    return <p className="text-slate-400">Loading bots...</p>
+    return <p className="text-stone-400">Loading bots...</p>
   }
 
   return (
     <div className="h-full overflow-y-auto">
       {summary && (
         <div className="flex gap-5 mb-6 text-sm">
-          <span className="text-slate-400">
-            Total <span className="text-slate-100 font-semibold">{summary.total}</span>
+          <span className="text-stone-400">
+            Total <span className="text-stone-100 font-semibold">{summary.total}</span>
           </span>
           <span className="text-emerald-400">
             Online <span className="font-semibold">{summary.online}</span>
@@ -65,7 +65,7 @@ export default function DashboardPage() {
       </div>
 
       {!loading && botList.length === 0 && (
-        <p className="text-slate-500 text-center mt-12">No bots found via PM2</p>
+        <p className="text-stone-500 text-center mt-12">No bots found via PM2</p>
       )}
     </div>
   )

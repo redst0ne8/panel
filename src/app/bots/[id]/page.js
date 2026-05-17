@@ -57,20 +57,20 @@ export default function BotDetailPage() {
     setLogKey((k) => k + 1)
   }
 
-  if (loading) return <p className="text-slate-400">Loading...</p>
+  if (loading) return <p className="text-stone-400">Loading...</p>
   if (error) return <p className="text-red-400">{error}</p>
   if (!bot) return <p className="text-red-400">Bot not found</p>
 
   return (
     <div className="flex-1 flex flex-col gap-6 p-10 overflow-hidden">
       <div className="flex items-center justify-between shrink-0">
-        <button onClick={() => router.push('/dashboard')} className="text-slate-400 hover:text-slate-200 text-sm transition-colors">
+        <button onClick={() => router.push('/dashboard')} className="text-stone-400 hover:text-stone-200 text-sm transition-colors">
           &larr; Back to Dashboard
         </button>
         <div className="flex items-center gap-3">
-          <h2 className="text-2xl font-bold text-slate-100">{bot.id}</h2>
+          <h2 className="text-2xl font-bold text-stone-100">{bot.id}</h2>
           <BotStatusBadge status={bot.status} />
-          <span className="text-sm text-slate-400 capitalize">{bot.status}</span>
+          <span className="text-sm text-stone-400 capitalize">{bot.status}</span>
         </div>
       </div>
 
@@ -81,9 +81,9 @@ export default function BotDetailPage() {
           <InfoBox label="Mode" value={bot.exec_mode} />
           <InfoBox label="Instances" value={bot.instances} />
           {bot.exec_path && (
-            <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
-              <p className="text-xs text-slate-400 mb-1">Path</p>
-              <p className="text-xs text-slate-300 break-all">{bot.exec_path}</p>
+            <div className="bg-stone-800 rounded-lg p-3 border border-stone-700">
+              <p className="text-xs text-stone-400 mb-1">Path</p>
+              <p className="text-xs text-stone-300 break-all">{bot.exec_path}</p>
             </div>
           )}
         </div>
@@ -114,18 +114,18 @@ export default function BotDetailPage() {
 
 function InfoBox({ label, value }) {
   return (
-    <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-      <p className="text-xs text-slate-400">{label}</p>
-      <p className="text-sm font-semibold text-slate-100">{value}</p>
+    <div className="bg-stone-800 rounded-lg p-4 border border-stone-700">
+      <p className="text-xs text-stone-400">{label}</p>
+      <p className="text-sm font-semibold text-stone-100">{value}</p>
     </div>
   )
 }
 
 function StatCard({ label, value }) {
   return (
-    <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-      <p className="text-xs text-slate-400 mb-1">{label}</p>
-      <p className="text-lg font-semibold text-slate-100">{value}</p>
+    <div className="bg-stone-800 rounded-lg p-4 border border-stone-700">
+      <p className="text-xs text-stone-400 mb-1">{label}</p>
+      <p className="text-lg font-semibold text-stone-100">{value}</p>
     </div>
   )
 }

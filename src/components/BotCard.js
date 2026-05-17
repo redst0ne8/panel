@@ -23,21 +23,21 @@ export default function BotCard({ bot }) {
   return (
     <Link
       href={`/bots/${encodeURIComponent(bot.id)}`}
-      className="block bg-slate-800 rounded-lg p-5 border border-slate-700 hover:border-primary-500 transition-colors"
+      className="block bg-stone-800 rounded-lg p-5 border border-stone-700 hover:border-primary-500 transition-colors"
     >
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-slate-100 font-semibold truncate">{bot.id}</h3>
+        <h3 className="text-stone-100 font-semibold truncate">{bot.id}</h3>
         <BotStatusBadge status={bot.status} />
       </div>
       <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-        <span className="text-slate-500">Uptime</span>
-        <span className="text-slate-300 text-right">{fmtUptime(bot.uptime)}</span>
-        <span className="text-slate-500">CPU</span>
-        <span className="text-slate-300 text-right">{bot.cpu}%</span>
-        <span className="text-slate-500">Memory</span>
-        <span className="text-slate-300 text-right">{fmtBytes(bot.memory)}</span>
-        <span className="text-slate-500">Restarts</span>
-        <span className="text-slate-300 text-right">{bot.restarts}</span>
+        <span className="text-stone-500">Uptime</span>
+        <span className="text-stone-300 text-right">{fmtUptime(bot.uptime)}</span>
+        <span className="text-stone-500">CPU</span>
+        <span className="text-stone-300 text-right">{bot.cpu}%</span>
+        <span className="text-stone-500">Memory</span>
+        <span className="text-stone-300 text-right">{fmtBytes(bot.memory)}</span>
+        <span className="text-stone-500">Restarts</span>
+        <span className="text-stone-300 text-right">{bot.restarts}</span>
       </div>
     </Link>
   )
