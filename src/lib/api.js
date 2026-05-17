@@ -1,11 +1,15 @@
-import { getCredentials } from './store'
+import { getCredentials, getSessionToken, getApiUrl } from './store'
 
 function baseUrl() {
-  return getCredentials()?.apiUrl || ''
+  return getApiUrl() || getCredentials()?.apiUrl || ''
 }
 
-function apiKey() {
-  return getCredentials()?.apiKey || ''
+function authHeader() {
+  const token = getSessionToken()
+  if (token) return 'Bearer ' + token
+  const creds = getCredentials()
+  if (creds?.apiKey) return 'Bearer ' + creds.apiKey
+  return ''
 }
 
 export async function apiFetch(path, options = {}) {
@@ -13,7 +17,7 @@ export async function apiFetch(path, options = {}) {
   const res = await fetch(url, {
     ...options,
     headers: {
-      Authorization: `Bearer ${apiKey()}`,
+      Authorization: authHeader(),
       'Content-Type': 'application/json',
       ...options.headers,
     },

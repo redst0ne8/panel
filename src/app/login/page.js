@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { setCredentials } from '@/lib/store'
+import { Suspense, useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { setCredentials, setApiUrl } from '@/lib/store'
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter()
-  const [apiUrl, setApiUrl] = useState(
+  const searchParams = useSearchParams()
+  const [showManual, setShowManual] = useState(false)
+  const [apiUrl, setApiUrlState] = useState(
     typeof window !== 'undefined'
       ? process.env.NEXT_PUBLIC_DEFAULT_API_URL || ''
       : ''
@@ -14,8 +16,16 @@ export default function LoginPage() {
   const [apiKey, setApiKey] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
-  async function handleSubmit(e) {
+  useEffect(() => { setMounted(true) }, [])
+
+  useEffect(() => {
+    const err = searchParams.get('error')
+    if (err) setError(decodeURIComponent(err))
+  }, [searchParams])
+
+  async function handleManualSubmit(e) {
     e.preventDefault()
     setError('')
     setLoading(true)
@@ -26,6 +36,7 @@ export default function LoginPage() {
         headers: { Authorization: `Bearer ${apiKey}` },
       })
       if (!res.ok) throw new Error('Connection failed')
+      setApiUrl(base)
       setCredentials(base, apiKey)
       router.push('/dashboard')
     } catch {
@@ -35,44 +46,98 @@ export default function LoginPage() {
     }
   }
 
+  function handleDiscordLogin() {
+    const base = apiUrl.replace(/\/+$/, '') || process.env.NEXT_PUBLIC_DEFAULT_API_URL
+    if (!base) {
+      setError('Set your API URL first, or use manual login.')
+      return
+    }
+    setApiUrl(base)
+    window.location.href = base + '/api/auth/login'
+  }
+
   return (
     <div className="flex-1 flex items-center justify-center p-10">
-      <form onSubmit={handleSubmit} className="bg-stone-800 p-8 rounded-xl shadow-lg w-full max-w-md border border-stone-700">
+      <div className="bg-stone-800 p-8 rounded-xl shadow-lg w-full max-w-md border border-stone-700">
         <h1 className="text-2xl font-bold text-stone-100 mb-2">Connect to Server</h1>
-        <p className="text-sm text-stone-400 mb-6">Enter your bot server API URL and key</p>
+        <p className="text-sm text-stone-400 mb-6">Enter your bot server API URL</p>
+
+        {error && (
+          <p className="text-red-400 text-sm mb-4">{error}</p>
+        )}
 
         <div className="mb-4">
           <label className="block text-stone-300 text-sm mb-1">Server URL</label>
           <input
             type="text"
             value={apiUrl}
-            onChange={(e) => setApiUrl(e.target.value)}
+            onChange={(e) => setApiUrlState(e.target.value)}
             placeholder="http://192.168.0.24:4000"
             className="w-full bg-stone-700 text-stone-100 px-3 py-2 rounded border border-stone-600 focus:border-primary-500 outline-none placeholder-stone-500"
           />
         </div>
 
-        <div className="mb-6">
-          <label className="block text-stone-300 text-sm mb-1">API Key</label>
-          <input
-            type="password"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            placeholder="Enter your API key"
-            className="w-full bg-stone-700 text-stone-100 px-3 py-2 rounded border border-stone-600 focus:border-primary-500 outline-none placeholder-stone-500"
-          />
+        <button
+          onClick={handleDiscordLogin}
+          className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white py-2.5 rounded font-medium transition-colors mb-3"
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z" />
+          </svg>
+          Sign in with Discord
+        </button>
+
+        <div className="relative mb-4">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-stone-700" />
+          </div>
+          <div className="relative flex justify-center text-xs">
+            <span className="bg-stone-800 px-2 text-stone-500">or</span>
+          </div>
         </div>
 
-        {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
-
         <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 rounded font-medium disabled:opacity-50 transition-colors"
+          onClick={() => setShowManual(!showManual)}
+          className="w-full text-sm text-stone-400 hover:text-stone-200 transition-colors mb-4"
         >
-          {loading ? 'Connecting...' : 'Connect'}
+          {showManual ? 'Hide' : 'Use'} API Key Login
         </button>
-      </form>
+
+        {showManual && (
+          <form onSubmit={handleManualSubmit}>
+            <div className="mb-4">
+              <label className="block text-stone-300 text-sm mb-1">API Key</label>
+              <input
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="Enter your API key"
+                className="w-full bg-stone-700 text-stone-100 px-3 py-2 rounded border border-stone-600 focus:border-primary-500 outline-none placeholder-stone-500"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-stone-600 hover:bg-stone-500 text-white py-2 rounded font-medium disabled:opacity-50 transition-colors"
+            >
+              {loading ? 'Connecting...' : 'Connect'}
+            </button>
+          </form>
+        )}
+      </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex-1 flex items-center justify-center">
+        <p className="text-stone-400">Loading...</p>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   )
 }

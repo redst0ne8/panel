@@ -2,8 +2,8 @@ import './globals.css'
 import AppNavbar from '@/components/AppNavbar'
 
 export const metadata = {
-  title: 'Bot Dashboard',
-  description: 'Remote monitoring and control for Discord bots',
+  title: 'StoneBots Panels',
+  description: 'Monitor and manage your Discord bots from one dashboard',
 }
 
 export default function RootLayout({ children }) {
