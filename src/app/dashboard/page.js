@@ -51,6 +51,22 @@ export default function DashboardPage() {
   }
 
   const pendingCount = submissions.filter((s) => s.status === 'pending').length
+  const reviewedCount = submissions.filter((s) => s.status !== 'pending').length
+  async function handleClearReviewed() {
+    const token = getSessionToken()
+    const apiUrl = getApiUrl()
+    if (!token || !apiUrl) return
+    try {
+      const res = await fetch(apiUrl + '/api/submissions/clear-reviewed', {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + token },
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setSubmissions(data.submissions || [])
+      }
+    } catch {}
+  }
 
   return (
     <div className="h-full overflow-y-auto">
@@ -84,9 +100,19 @@ export default function DashboardPage() {
 
       {submissions.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-sm font-medium text-stone-400 mb-3 uppercase tracking-wider">
-            Submissions
-          </h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-medium text-stone-400 uppercase tracking-wider">
+              Submissions
+            </h3>
+            {reviewedCount > 0 && (
+              <button
+                onClick={handleClearReviewed}
+                className="text-xs text-stone-500 hover:text-stone-300 transition-colors"
+              >
+                Clear reviewed
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {submissions.map((s) => (
               <SubmissionCard key={s.id} submission={s} />
