@@ -8,8 +8,8 @@ import BotStatusBadge from '@/components/BotStatusBadge'
 import ControlPanel from '@/components/ControlPanel'
 import LogViewer from '@/components/LogViewer'
 
-function fmtUptime(ts) {
-  if (!ts) return 'N/A'
+function fmtUptime(ts, status) {
+  if (status !== 'online' || !ts) return 'N/A'
   const s = Math.floor((Date.now() - ts) / 1000)
   if (s < 60) return `${s}s`
   if (s < 3600) return `${Math.floor(s / 60)}m ${s % 60}s`
@@ -103,7 +103,7 @@ export default function BotDetailPage() {
       </div>
 
       <div className="shrink-0 grid grid-cols-2 sm:grid-cols-4 gap-6">
-        <StatCard label="Uptime" value={fmtUptime(bot.uptime)} />
+        <StatCard label="Uptime" value={fmtUptime(bot.uptime, bot.status)} />
         <StatCard label="Restarts" value={bot.restarts} />
         <StatCard label="CPU" value={`${bot.cpu}%`} />
         <StatCard label="Memory" value={fmtBytes(bot.memory)} />

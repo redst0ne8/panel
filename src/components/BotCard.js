@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import BotStatusBadge from './BotStatusBadge'
 
-function fmtUptime(ts) {
-  if (!ts) return 'N/A'
+function fmtUptime(ts, status) {
+  if (status !== 'online' || !ts) return 'N/A'
   const s = Math.floor((Date.now() - ts) / 1000)
   if (s < 60) return `${s}s`
   if (s < 3600) return `${Math.floor(s / 60)}m ${s % 60}s`
@@ -31,7 +31,7 @@ export default function BotCard({ bot }) {
       </div>
       <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
         <span className="text-stone-500">Uptime</span>
-        <span className="text-stone-300 text-right">{fmtUptime(bot.uptime)}</span>
+        <span className="text-stone-300 text-right">{fmtUptime(bot.uptime, bot.status)}</span>
         <span className="text-stone-500">CPU</span>
         <span className="text-stone-300 text-right">{bot.cpu}%</span>
         <span className="text-stone-500">Memory</span>
