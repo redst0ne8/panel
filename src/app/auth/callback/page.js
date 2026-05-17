@@ -8,6 +8,7 @@ function CallbackContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [error, setError] = useState('')
+  const [debug, setDebug] = useState('')
 
   useEffect(() => {
     const token = searchParams.get('token')
@@ -20,7 +21,8 @@ function CallbackContent() {
     }
 
     if (!token) {
-      router.replace('/login')
+      setDebug('No token found in URL')
+      setTimeout(() => router.replace('/login'), 2000)
       return
     }
 
@@ -28,26 +30,34 @@ function CallbackContent() {
 
     const apiUrl = apiUrlParam || getApiUrl()
     if (!apiUrl) {
-      router.replace('/login')
+      setDebug('No API URL found (param=' + apiUrlParam + ', storage=' + getApiUrl() + ')')
+      setTimeout(() => router.replace('/login'), 3000)
       return
     }
 
     setApiUrl(apiUrl)
 
-    fetch(apiUrl + '/api/auth/me', {
+    const url = apiUrl + '/api/auth/me'
+    setDebug('Fetching ' + url)
+
+    fetch(url, {
       headers: { Authorization: 'Bearer ' + token },
     })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(async (res) => {
+        const data = await res.json()
+        if (!res.ok) {
+          setDebug('API error: ' + (data.error || res.status))
+          return
+        }
         if (data.user) {
           setUser(data.user)
           router.replace('/dashboard')
         } else {
-          router.replace('/login')
+          setDebug('No user in response')
         }
       })
-      .catch(() => {
-        router.replace('/login')
+      .catch((e) => {
+        setDebug('Network error: ' + e.message)
       })
   }, [router, searchParams])
 
@@ -69,12 +79,16 @@ function CallbackContent() {
 
   return (
     <div className="flex-1 flex items-center justify-center">
-      <div className="flex items-center gap-3 text-stone-400">
+      <div className="flex flex-col items-center gap-3 text-stone-400">
         <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" />
           <path fill="currentColor" className="opacity-75" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
         </svg>
-        Signing you in&hellip;
+        {debug ? (
+          <p className="text-xs text-stone-500 max-w-md text-center break-all">{debug}</p>
+        ) : (
+          <p>Signing you in&hellip;</p>
+        )}
       </div>
     </div>
   )
@@ -84,13 +98,7 @@ export default function AuthCallbackPage() {
   return (
     <Suspense fallback={
       <div className="flex-1 flex items-center justify-center">
-        <div className="flex items-center gap-3 text-stone-400">
-          <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" />
-            <path fill="currentColor" className="opacity-75" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-          </svg>
-          Loading&hellip;
-        </div>
+        <p className="text-stone-400">Loading&hellip;</p>
       </div>
     }>
       <CallbackContent />
