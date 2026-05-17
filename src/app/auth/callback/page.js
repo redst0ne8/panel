@@ -12,6 +12,7 @@ function CallbackContent() {
   useEffect(() => {
     const token = searchParams.get('token')
     const err = searchParams.get('error')
+    const apiUrlParam = searchParams.get('apiUrl')
 
     if (err) {
       setError(decodeURIComponent(err))
@@ -25,11 +26,13 @@ function CallbackContent() {
 
     setSessionToken(token)
 
-    const apiUrl = getApiUrl()
+    const apiUrl = apiUrlParam || getApiUrl()
     if (!apiUrl) {
       router.replace('/login')
       return
     }
+
+    setApiUrl(apiUrl)
 
     fetch(apiUrl + '/api/auth/me', {
       headers: { Authorization: 'Bearer ' + token },
