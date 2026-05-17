@@ -2,11 +2,14 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { bots, system } from '@/lib/api'
+import { getSessionToken, getApiUrl } from '@/lib/store'
 import BotCard from '@/components/BotCard'
+import SubmissionCard from '@/components/SubmissionCard'
 
 export default function DashboardPage() {
   const [botList, setBotList] = useState([])
   const [summary, setSummary] = useState(null)
+  const [submissions, setSubmissions] = useState([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
 
@@ -16,6 +19,20 @@ export default function DashboardPage() {
       setBotList(botData.bots)
       setSummary(statusData)
       setError('')
+
+      const token = getSessionToken()
+      if (token) {
+        const apiUrl = getApiUrl()
+        if (apiUrl) {
+          const res = await fetch(apiUrl + '/api/submissions/mine', {
+            headers: { Authorization: 'Bearer ' + token },
+          })
+          if (res.ok) {
+            const data = await res.json()
+            setSubmissions(data.submissions || [])
+          }
+        }
+      }
     } catch (err) {
       setError(err.message)
     } finally {
@@ -33,10 +50,12 @@ export default function DashboardPage() {
     return <p className="text-stone-400">Loading bots...</p>
   }
 
+  const pendingCount = submissions.filter((s) => s.status === 'pending').length
+
   return (
     <div className="h-full overflow-y-auto">
       {summary && (
-        <div className="flex gap-5 mb-6 text-sm">
+        <div className="flex gap-5 mb-6 text-sm flex-wrap">
           <span className="text-stone-400">
             Total <span className="text-stone-100 font-semibold">{summary.total}</span>
           </span>
@@ -49,6 +68,11 @@ export default function DashboardPage() {
           <span className="text-red-400">
             Errored <span className="font-semibold">{summary.errored}</span>
           </span>
+          {pendingCount > 0 && (
+            <span className="text-blue-400">
+              Pending <span className="font-semibold">{pendingCount}</span>
+            </span>
+          )}
         </div>
       )}
 
@@ -58,14 +82,32 @@ export default function DashboardPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {botList.map((bot) => (
-          <BotCard key={bot.id} bot={bot} />
-        ))}
+      {submissions.length > 0 && (
+        <div className="mb-8">
+          <h3 className="text-sm font-medium text-stone-400 mb-3 uppercase tracking-wider">
+            Submissions
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {submissions.map((s) => (
+              <SubmissionCard key={s.id} submission={s} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <h3 className="text-sm font-medium text-stone-400 mb-3 uppercase tracking-wider">
+          Running Bots
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {botList.map((bot) => (
+            <BotCard key={bot.id} bot={bot} />
+          ))}
+        </div>
       </div>
 
-      {!loading && botList.length === 0 && (
-        <p className="text-stone-500 text-center mt-12">No bots found via PM2</p>
+      {!loading && botList.length === 0 && submissions.length === 0 && (
+        <p className="text-stone-500 text-center mt-12">No bots found</p>
       )}
     </div>
   )
