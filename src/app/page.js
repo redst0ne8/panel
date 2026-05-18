@@ -175,7 +175,7 @@ export default function LandingPage() {
             The All-In-One Bot For You
           </h2>
           <p className="text-stone-400 text-lg md:text-xl leading-relaxed mb-10">
-            [Placeholder — write a short description here about what makes your bot the all-in-one solution. Talk about the modules, customization, support, etc.]
+            Over the past few months, Redsotne has spent this time creating and perfecting an all new bot which can do 90% of what other bots can do. No subscriptions, one time payment only [per bot]. With features like ER:LC support, product spaces, moderation, maangment, and so much more, the possiblities of what you can do are limitless. Click the explore button below to learn more about this bot.
           </p>
           <Link
             href="/explore"
