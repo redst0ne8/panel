@@ -12,6 +12,7 @@ const modules = [
   { name: 'Roblox Verification', desc: 'This allows users to verify their roblox account for your server, providing a lockout system so you have to verify to see channels.', price: '250 Robux' },
   { name: 'Welcomer', desc: 'This adds a simple member welcomer to your server.', price: '50 Robux' },
   { name: 'Products', desc: 'This adds a full product server style setup with a list, purchase links, and more!', price: '200 Robux' },
+  { name: 'Custom Commands', desc: 'Register your own commands for your bot! Price is variable in consideration of how many, depth of command, and features.', price: '100 Robux each' },
 ]
 
 function Divider() {
