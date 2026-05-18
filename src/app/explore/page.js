@@ -2,16 +2,16 @@ import Link from 'next/link'
 
 const modules = [
   { name: 'ER:LC', desc: 'This module has lots of integration with your ER:LC Private Server using the API Key you have from the server.', price: '300 Robux' },
-  { name: 'Moderation', desc: 'This module allows you to moderate your server!', price: '200 Robux' },
+  { name: 'Moderation', desc: 'This module allows you to moderate your server!', price: '350 Robux' },
   { name: 'Backups', desc: 'This module allows creating full server backups as a raid prevention and protection measure.', price: '300 Robux' },
   { name: 'Server Logs', desc: 'This module configures a logging system to log server, chat, and other actions.', price: '150 Robux' },
   { name: 'Staff Management', desc: 'This module provides commands and functionality to manage a staff team.', price: '250 Robux' },
   { name: 'Fun Commands', desc: 'This adds a lot of fun commands and silly things for your members to have fun with, including an economy system.', price: '200 Robux' },
-  { name: 'Tickets', desc: 'This adds a full ticket system supported up to 5 ticket panels.', price: '300 Robux' },
+  { name: 'Tickets', desc: 'This adds a full ticket system supported up to 5 ticket panels.', price: '600 Robux' },
   { name: 'Command Logs', desc: 'This is an expansion to the logging module but can work standalone. This logs all commands, buttons, modals, etc. that are used by anyone in your server.', price: '100 Robux' },
   { name: 'Roblox Verification', desc: 'This allows users to verify their roblox account for your server, providing a lockout system so you have to verify to see channels.', price: '250 Robux' },
   { name: 'Welcomer', desc: 'This adds a simple member welcomer to your server.', price: '50 Robux' },
-  { name: 'Products', desc: 'This adds a full product server style setup with a list, purchase links, and more!', price: '150 Robux' },
+  { name: 'Products', desc: 'This adds a full product server style setup with a list, purchase links, and more!', price: '200 Robux' },
 ]
 
 function Divider() {
@@ -86,7 +86,9 @@ export default function ExplorePage() {
           The pricing of the bot is very unique. The base bot is 400 Robux on its own, with NO modules,
           albeit a bot and just a bot isn&apos;t very helpful. Which is why we offer{' '}
           <strong className="text-stone-200">Bundles!</strong> The bundles are able to be modified,
-          however if no bundle fits you, you can always spec out your own bot!
+          however if no bundle fits you, you can always spec out your own bot! 
+
+          {' '}<strong className="text-stone-200">All pricing is subject to change at any time.</strong>
         </p>
 
         <h3 className="text-2xl font-bold text-stone-100 mb-6">Bundles</h3>
@@ -95,7 +97,7 @@ export default function ExplorePage() {
           <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-6">
             <h4 className="text-xl font-bold text-stone-100 mb-2">
               All Features! Full Bundle
-              <span className="ml-2 text-stone-400 font-normal text-base">&mdash; 1,750 Robux</span>
+              <span className="ml-2 text-stone-400 font-normal text-base">&mdash; 2,250 Robux</span>
             </h4>
             <ul className="text-stone-400 space-y-1 mb-4">
               <li className="flex items-start gap-2">
@@ -112,7 +114,7 @@ export default function ExplorePage() {
           <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-6">
             <h4 className="text-xl font-bold text-stone-100 mb-2">
               Product Shop Bundle
-              <span className="ml-2 text-stone-400 font-normal text-base">&mdash; 1,000 Robux</span>
+              <span className="ml-2 text-stone-400 font-normal text-base">&mdash; 1,350 Robux</span>
             </h4>
             <ul className="text-stone-400 space-y-1 mb-4">
               <li className="flex items-start gap-2">
@@ -129,7 +131,7 @@ export default function ExplorePage() {
           <div className="bg-stone-900/50 border border-stone-800 rounded-xl p-6">
             <h4 className="text-xl font-bold text-stone-100 mb-2">
               ER:LC Minimalist Bundle
-              <span className="ml-2 text-stone-400 font-normal text-base">&mdash; 900 Robux</span>
+              <span className="ml-2 text-stone-400 font-normal text-base">&mdash; 950 Robux</span>
             </h4>
             <ul className="text-stone-400 space-y-1 mb-4">
               <li className="flex items-start gap-2">
@@ -138,7 +140,7 @@ export default function ExplorePage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">&#x2713;</span>
-                <span className="text-green-400 font-semibold">SAVE 350 ROBUX!</span>
+                <span className="text-green-400 font-semibold">SAVE 300 ROBUX!</span>
               </li>
             </ul>
           </div>
