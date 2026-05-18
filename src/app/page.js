@@ -113,6 +113,12 @@ export default function LandingPage() {
     <div className="flex-1 overflow-y-auto">
       <section className="relative min-h-[90vh] flex items-center justify-center px-6">
         <div className="absolute inset-0 pointer-events-none" style={{
+          backgroundImage: "url('/bg.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.15,
+        }} />
+        <div className="absolute inset-0 pointer-events-none" style={{
           background: 'radial-gradient(ellipse at 50% 0%, rgba(220,38,38,0.08) 0%, transparent 60%)',
         }} />
         <div className="relative z-10 text-center max-w-3xl">
