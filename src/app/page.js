@@ -160,6 +160,31 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="border-t border-stone-800" />
+      </div>
+
+      <section className="max-w-6xl mx-auto px-6 py-24">
+        <div className="text-center max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-bold text-stone-100 mb-6">
+            The All-In-One Bot For You
+          </h2>
+          <p className="text-stone-400 text-lg md:text-xl leading-relaxed mb-10">
+            [Placeholder — write a short description here about what makes your bot the all-in-one solution. Talk about the modules, customization, support, etc.]
+          </p>
+          <Link
+            href="/explore"
+            className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-8 py-3.5 rounded-lg font-semibold transition-colors text-lg"
+          >
+            Explore!
+          </Link>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="border-t border-stone-800" />
+      </div>
+
       <section className="max-w-6xl mx-auto px-6 pb-32">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-stone-100 mb-4">
