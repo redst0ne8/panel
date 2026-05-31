@@ -7,6 +7,7 @@ import { getCredentials } from '@/lib/store'
 import BotStatusBadge from '@/components/BotStatusBadge'
 import ControlPanel from '@/components/ControlPanel'
 import LogViewer from '@/components/LogViewer'
+import EnvEditor from '@/components/EnvEditor'
 
 function fmtUptime(ts, status) {
   if (status !== 'online' || !ts) return 'N/A'
@@ -86,6 +87,8 @@ export default function BotDetailPage() {
               <p className="text-xs text-stone-300 break-all">{bot.exec_path}</p>
             </div>
           )}
+
+          <EnvEditor botId={bot.id} />
         </div>
 
         <div className="flex-1 flex flex-col min-h-0">

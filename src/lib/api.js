@@ -33,6 +33,12 @@ export const bots = {
   restart: (id) => apiFetch(`/api/bots/${encodeURIComponent(id)}/restart`, { method: 'POST' }),
   stop: (id) => apiFetch(`/api/bots/${encodeURIComponent(id)}/stop`, { method: 'POST' }),
   start: (id) => apiFetch(`/api/bots/${encodeURIComponent(id)}/start`, { method: 'POST' }),
+  getEnv: (id) => apiFetch(`/api/bots/${encodeURIComponent(id)}/env`),
+  updateEnv: (id, env) =>
+    apiFetch(`/api/bots/${encodeURIComponent(id)}/env`, {
+      method: 'POST',
+      body: JSON.stringify({ env }),
+    }),
   logs: (id, { tail = 100, type } = {}) => {
     const p = new URLSearchParams({ tail })
     if (type) p.set('type', type)
