@@ -36,7 +36,7 @@ export function clearSessionToken() {
 
 export function getApiUrl() {
   if (typeof window === 'undefined') return null
-  return sessionStorage.getItem(API_URL_KEY) || process.env.NEXT_PUBLIC_DEFAULT_API_URL || ''
+  return sessionStorage.getItem(API_URL_KEY) || process.env.NEXT_PUBLIC_API_URL || ''
 }
 
 export function setApiUrl(url) {

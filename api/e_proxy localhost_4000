@@ -1,0 +1,19 @@
+[0;1;31m×[0m caddy.service - Caddy
+     Loaded: loaded (]8;;file://brainspawn/lib/systemd/system/caddy.service/lib/systemd/system/caddy.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;31mfailed[0m (Result: exit-code) since Sun 2026-05-17 01:20:08 BST; 3s ago
+       Docs: ]8;;https://caddyserver.com/docs/https://caddyserver.com/docs/]8;;
+    Process: 1484452 ExecStart=/usr/bin/caddy run --environ --config /etc/caddy/Caddyfile [0;1;31m(code=exited, status=1/FAILURE)[0m
+   Main PID: 1484452 (code=exited, status=1/FAILURE)
+     Status: "loading new config: http app module: start: listening on :80: listen tcp :80: bind: address already in use"
+        CPU: 26ms
+
+May 17 01:20:08 brainspawn caddy[1484452]: {"level":"info","ts":1778977208.11279,"logger":"http","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+May 17 01:20:08 brainspawn caddy[1484452]: {"level":"info","ts":1778977208.112802,"logger":"http","msg":"enabling automatic HTTP->HTTPS redirects","server_name":"srv0"}
+May 17 01:20:08 brainspawn caddy[1484452]: {"level":"info","ts":1778977208.1128538,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x4000348ee0"}
+May 17 01:20:08 brainspawn caddy[1484452]: {"level":"info","ts":1778977208.1130111,"logger":"tls","msg":"cleaning storage unit","description":"FileStorage:/var/lib/caddy/.local/share/caddy"}
+May 17 01:20:08 brainspawn caddy[1484452]: {"level":"info","ts":1778977208.1130295,"logger":"tls","msg":"finished cleaning storage units"}
+May 17 01:20:08 brainspawn caddy[1484452]: {"level":"info","ts":1778977208.1130836,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0x4000348ee0"}
+May 17 01:20:08 brainspawn caddy[1484452]: Error: loading initial config: loading new config: http app module: start: listening on :80: listen tcp :80: bind: address already in use
+May 17 01:20:08 brainspawn systemd[1]: [0;1;39m[0;1;31m[0;1;39mcaddy.service: Main process exited, code=exited, status=1/FAILURE[0m
+May 17 01:20:08 brainspawn systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcaddy.service: Failed with result 'exit-code'.[0m
+May 17 01:20:08 brainspawn systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start caddy.service - Caddy.[0m
