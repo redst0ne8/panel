@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "preview": "npx serve out"
   },
   "dependencies": {
     "next": "^14.2.0",
