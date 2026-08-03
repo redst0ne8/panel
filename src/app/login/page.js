@@ -29,7 +29,14 @@ export default function LoginPage() {
         headers: { Authorization: `Bearer ${apiKey}` },
       })
       if (!res.ok) {
-        throw new Error('Invalid API key or unreachable API')
+        let detail = ''
+        try {
+          const data = await res.json()
+          detail = data?.error ? `: ${data.error}` : ''
+        } catch {
+          /* ignore non-JSON body */
+        }
+        throw new Error(`Login failed (${res.status})${detail}`)
       }
       setApiUrl(base)
       setCredentials(base, apiKey)
