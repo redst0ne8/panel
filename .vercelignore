@@ -1,0 +1,8 @@
+# Exclude the Express API — it runs on the Raspberry Pi, not Vercel.
+# Vercel auto-detects a top-level "api/" directory as serverless functions.
+api
+
+node_modules
+.next
+out
+*.log
