@@ -4,7 +4,7 @@ const pm2 = require('pm2');
 const clients = new Map();
 
 function setup(server) {
-  const wss = new WebSocketServer({ server });
+  const wss = new WebSocketServer({ server, path: '/api/logs' });
 
   wss.on('connection', (ws, req) => {
     const url = new URL(req.url, `http://${req.headers.host}`);

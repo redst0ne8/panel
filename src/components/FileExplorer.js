@@ -28,39 +28,43 @@ function FileIcon({ isDirectory, name }) {
   )
 }
 
-function TreeNode({ item, depth, onOpenFile, expanded, onToggle }) {
+function TreeNode({ item, depth, onSelect, onToggle, selectedPath, expandedPaths }) {
   const indent = depth * 14
   const isDir = item.isDirectory
+  const isSelected = selectedPath === item.path
 
   return (
     <div>
       <div
-        className="flex items-center gap-1.5 py-1 px-2 rounded-md hover:bg-stone-800/70 cursor-pointer select-none group"
+        className={`flex items-center gap-1.5 py-1 px-2 rounded-md cursor-pointer select-none group ${
+          isSelected ? 'bg-red-900/40 text-stone-100' : 'hover:bg-stone-800/70 text-stone-300'
+        }`}
         style={{ paddingLeft: `${8 + indent}px` }}
-        onClick={() => (isDir ? onToggle(item.path) : onOpenFile(item.path))}
-        onDoubleClick={() => !isDir && onOpenFile(item.path)}
+        onClick={() => onSelect(item)}
+        onDoubleClick={() => isDir && onToggle(item.path)}
         title={item.path}
       >
         <span className={`w-3 h-3 flex items-center justify-center shrink-0 ${isDir ? '' : 'opacity-0'}`}>
           {isDir && (
-            <svg className={`w-3 h-3 text-stone-500 transition-transform ${expanded ? 'rotate-90' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+            <svg className={`w-3 h-3 text-stone-500 transition-transform ${expandedPaths[item.path] ? 'rotate-90' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
               <polyline points="6 9 12 15 18 9" />
             </svg>
           )}
         </span>
         <FileIcon isDirectory={isDir} name={item.name} />
-        <span className="truncate text-[13px] font-mono text-stone-300">{item.name}</span>
+        <span className="truncate text-[13px] font-mono">{item.name}</span>
       </div>
-      {isDir && expanded && item.children && (
+      {isDir && expandedPaths[item.path] && item.children && (
         <div>
           {item.children.map((child) => (
             <TreeNode
               key={child.path}
               item={child}
               depth={depth + 1}
-              onOpenFile={onOpenFile}
-              expanded={expanded === child.path ? true : false}
+              onSelect={onSelect}
               onToggle={onToggle}
+              selectedPath={selectedPath}
+              expandedPaths={expandedPaths}
             />
           ))}
         </div>
@@ -74,6 +78,7 @@ export default function FileExplorer({ currentPath, onFileSelect, onPathChange, 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [expanded, setExpanded] = useState({})
+  const [selected, setSelected] = useState(null)
 
   const load = useCallback(async (dir) => {
     setLoading(true)
@@ -121,9 +126,19 @@ export default function FileExplorer({ currentPath, onFileSelect, onPathChange, 
 
   const goUp = useCallback(() => {
     if (currentPath && currentPath !== '') {
+      setSelected(null)
       load(currentPath.split('/').slice(0, -1).join('/'))
     }
   }, [currentPath, load])
+
+  const handleOpen = useCallback(() => {
+    if (!selected) return
+    if (selected.isDirectory) {
+      toggle(selected.path)
+    } else {
+      onFileSelect(selected.path)
+    }
+  }, [selected, onFileSelect, toggle])
 
   return (
     <div className="flex flex-col h-full bg-stone-950 overflow-hidden">
@@ -134,6 +149,14 @@ export default function FileExplorer({ currentPath, onFileSelect, onPathChange, 
         <span className="flex-1 text-[11px] text-stone-500 truncate font-mono" title={currentPath || '~'}>
           {currentPath || '~'}
         </span>
+        <button
+          onClick={handleOpen}
+          disabled={!selected}
+          title={selected ? `Open ${selected.name}` : 'Select a file to open'}
+          className="px-2.5 py-1 text-[11px] font-medium text-white bg-red-600 hover:bg-red-700 disabled:bg-stone-800 disabled:text-stone-500 disabled:cursor-not-allowed rounded transition-colors shrink-0"
+        >
+          Open
+        </button>
         <button onClick={() => load(currentPath)} disabled={loading} className="p-1 text-stone-400 hover:text-stone-200 hover:bg-stone-800 rounded transition-colors" title="Refresh">
           <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M23 4v6h-6" /><path d="M1 20v-6h6" /><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" /></svg>
         </button>
@@ -159,9 +182,10 @@ export default function FileExplorer({ currentPath, onFileSelect, onPathChange, 
               key={item.path}
               item={item}
               depth={0}
-              onOpenFile={onFileSelect}
-              expanded={!!expanded[item.path]}
+              onSelect={setSelected}
               onToggle={toggle}
+              selectedPath={selected?.path}
+              expandedPaths={expanded}
             />
           ))
         )}
