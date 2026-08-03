@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
+const { WebSocketServer } = require('ws');
 
 const systemRoutes = require('./routes/system');
 const botRoutes = require('./routes/bots');
@@ -47,5 +48,31 @@ const server = app.listen(PORT, () => {
   console.log(`Bot API server listening on port ${PORT}`);
 });
 
-setupLogStream(server);
-setupTerminalWebSocket(server);
+const logWss = new WebSocketServer({ noServer: true });
+const terminalWss = new WebSocketServer({ noServer: true });
+
+setupLogStream(logWss);
+setupTerminalWebSocket(terminalWss);
+
+server.on('upgrade', (request, socket, head) => {
+  let pathname = '';
+  try {
+    pathname = new URL(request.url, `http://${request.headers.host}`).pathname;
+  } catch {
+    socket.destroy();
+    return;
+  }
+
+  let wss = null;
+  if (pathname.startsWith('/api/terminal/ws')) wss = terminalWss;
+  else if (pathname.startsWith('/api/logs')) wss = logWss;
+
+  if (!wss) {
+    socket.destroy();
+    return;
+  }
+
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit('connection', ws, request);
+  });
+});

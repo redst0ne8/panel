@@ -67,9 +67,7 @@ function createTerminalSession(ws, req, { cols = 80, rows = 24 } = {}) {
   ws.send(JSON.stringify({ type: 'ready', sessionId }));
 }
 
-function setupTerminalWebSocket(server) {
-  const wss = new WebSocket.Server({ server, path: '/api/terminal/ws' });
-
+function setupTerminalWebSocket(wss) {
   wss.on('connection', (ws, req) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const cols = parseInt(url.searchParams.get('cols'), 10) || 80;

@@ -1,11 +1,8 @@
-const { WebSocketServer } = require('ws');
 const pm2 = require('pm2');
 
 const clients = new Map();
 
-function setup(server) {
-  const wss = new WebSocketServer({ server, path: '/api/logs' });
-
+function setup(wss) {
   wss.on('connection', (ws, req) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const token = url.searchParams.get('token');

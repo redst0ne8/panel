@@ -153,8 +153,8 @@ export default function TerminalModal({ isOpen, onClose, initialCommand, showHea
   if (!isOpen) return null
 
   return (
-    <div className={showHeader ? "fixed inset-0 z-50 flex items-center justify-center" : "h-full w-full flex flex-col"} onClick={showHeader ? onClose : undefined}>
-      {showHeader && <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />}
+    <div className={showHeader ? "fixed inset-0 z-50 flex items-center justify-center" : "h-full w-full flex flex-col"}>
+      {showHeader && <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />}
       <div className={`relative z-10 flex flex-col bg-stone-950 border border-stone-700 rounded-xl shadow-2xl overflow-hidden ${showHeader ? 'w-full max-w-5xl h-[85vh] max-h-[85vh]' : 'w-full h-full border-0 rounded-none'}`}>
         {showHeader && (
           <div className="flex items-center justify-between px-4 py-3 border-b border-stone-700 bg-stone-900">

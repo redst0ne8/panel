@@ -63,8 +63,8 @@ export default function OpenFolderModal({ isOpen, onClose, onSelect }) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={onClose}>
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-10 w-full max-w-2xl h-[70vh] max-h-[70vh] bg-stone-950 border border-stone-700 rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-200">
         <div className="flex items-center justify-between px-4 py-3 border-b border-stone-700 bg-stone-900">
           <h2 className="text-lg font-semibold text-stone-100">Open Folder or File</h2>
