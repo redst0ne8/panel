@@ -26,10 +26,6 @@ export default function EditorPage() {
     if (!isLoggedIn) router.push('/login')
   }, [isLoggedIn, router])
 
-  if (!mounted || !isLoggedIn) {
-    return <div className="h-full w-full flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-2 border-red-600 border-t-transparent" /></div>
-  }
-
   const openFile = useCallback(async (path) => {
     try {
       const existingTab = openTabs.find(t => t.path === path)
@@ -79,6 +75,10 @@ export default function EditorPage() {
   const handleTabChange = useCallback((id) => {
     setActiveTabId(id)
   }, [])
+
+  if (!mounted || !isLoggedIn) {
+    return <div className="h-full w-full flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-2 border-red-600 border-t-transparent" /></div>
+  }
 
   const activeTab = openTabs.find(t => t.id === activeTabId)
 
