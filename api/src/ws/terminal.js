@@ -7,7 +7,7 @@ function createTerminalSession(ws, req, { cols = 80, rows = 24 } = {}) {
   const shell = process.env.SHELL || '/bin/bash';
   const workDir = process.env.FILE_ROOT || '/home/pi';
   
-  const proc = spawn(shell, [], {
+  const proc = spawn('script', ['-q', '-e', '-f', '-c', shell, '/dev/null'], {
     cwd: workDir,
     env: { ...process.env, TERM: 'xterm-256color', COLUMNS: String(cols), LINES: String(rows) },
     stdio: ['pipe', 'pipe', 'pipe'],

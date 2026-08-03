@@ -28,7 +28,7 @@ function FileIcon({ isDirectory, name }) {
   )
 }
 
-function TreeNode({ item, depth, onSelect, onToggle, selectedPath, expandedPaths }) {
+function TreeNode({ item, depth, onSelect, onToggle, onOpenDir, selectedPath, expandedPaths }) {
   const indent = depth * 14
   const isDir = item.isDirectory
   const isSelected = selectedPath === item.path
@@ -41,16 +41,20 @@ function TreeNode({ item, depth, onSelect, onToggle, selectedPath, expandedPaths
         }`}
         style={{ paddingLeft: `${8 + indent}px` }}
         onClick={() => onSelect(item)}
-        onDoubleClick={() => isDir && onToggle(item.path)}
-        title={item.path}
+        onDoubleClick={() => isDir && onOpenDir(item.path)}
+        title={isDir ? `${item.path} (double-click to open)` : item.path}
       >
-        <span className={`w-3 h-3 flex items-center justify-center shrink-0 ${isDir ? '' : 'opacity-0'}`}>
+        <button
+          className={`w-3 h-3 flex items-center justify-center shrink-0 ${isDir ? 'cursor-pointer hover:text-stone-200' : 'pointer-events-none'}`}
+          onClick={(e) => { e.stopPropagation(); if (isDir) onToggle(item.path) }}
+          title={isDir ? 'Expand / collapse' : ''}
+        >
           {isDir && (
             <svg className={`w-3 h-3 text-stone-500 transition-transform ${expandedPaths[item.path] ? 'rotate-90' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
               <polyline points="6 9 12 15 18 9" />
             </svg>
           )}
-        </span>
+        </button>
         <FileIcon isDirectory={isDir} name={item.name} />
         <span className="truncate text-[13px] font-mono">{item.name}</span>
       </div>
@@ -63,6 +67,7 @@ function TreeNode({ item, depth, onSelect, onToggle, selectedPath, expandedPaths
               depth={depth + 1}
               onSelect={onSelect}
               onToggle={onToggle}
+              onOpenDir={onOpenDir}
               selectedPath={selectedPath}
               expandedPaths={expandedPaths}
             />
@@ -73,7 +78,7 @@ function TreeNode({ item, depth, onSelect, onToggle, selectedPath, expandedPaths
   )
 }
 
-export default function FileExplorer({ currentPath, onFileSelect, onPathChange, onLoadDirectory }) {
+export default function FileExplorer({ currentPath, onFileSelect, onPathChange }) {
   const [items, setItems] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -86,19 +91,27 @@ export default function FileExplorer({ currentPath, onFileSelect, onPathChange, 
     try {
       const data = await files.list(dir)
       setItems(data.items)
-      if (onPathChange) onPathChange(data.path)
-      if (onLoadDirectory) onLoadDirectory(data.path)
     } catch (err) {
       setError(err.message)
     } finally {
       setLoading(false)
     }
-  }, [onPathChange, onLoadDirectory])
+  }, [])
 
   useEffect(() => {
     if (currentPath !== undefined) load(currentPath)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPath])
+
+  const openDirectory = useCallback((path) => {
+    setSelected(null)
+    setExpanded({})
+    if (onPathChange) {
+      onPathChange(path)
+    } else {
+      load(path)
+    }
+  }, [onPathChange, load])
 
   const toggle = useCallback(async (dirPath) => {
     setExpanded(prev => {
@@ -126,19 +139,18 @@ export default function FileExplorer({ currentPath, onFileSelect, onPathChange, 
 
   const goUp = useCallback(() => {
     if (currentPath && currentPath !== '') {
-      setSelected(null)
-      load(currentPath.split('/').slice(0, -1).join('/'))
+      openDirectory(currentPath.split('/').slice(0, -1).join('/'))
     }
-  }, [currentPath, load])
+  }, [currentPath, openDirectory])
 
   const handleOpen = useCallback(() => {
     if (!selected) return
     if (selected.isDirectory) {
-      toggle(selected.path)
+      openDirectory(selected.path)
     } else {
       onFileSelect(selected.path)
     }
-  }, [selected, onFileSelect, toggle])
+  }, [selected, onFileSelect, openDirectory])
 
   return (
     <div className="flex flex-col h-full bg-stone-950 overflow-hidden">
@@ -146,13 +158,19 @@ export default function FileExplorer({ currentPath, onFileSelect, onPathChange, 
         <button onClick={goUp} disabled={!currentPath || currentPath === ''} className="p-1 text-stone-400 hover:text-stone-200 hover:bg-stone-800 disabled:opacity-30 rounded transition-colors" title="Go up">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 18l-6-6 6-6" /></svg>
         </button>
-        <span className="flex-1 text-[11px] text-stone-500 truncate font-mono" title={currentPath || '~'}>
-          {currentPath || '~'}
-        </span>
+        <div className="flex-1 flex items-center gap-0.5 text-[11px] text-stone-500 font-mono min-w-0 overflow-x-auto whitespace-nowrap" title={currentPath || '~'}>
+          <button onClick={() => openDirectory('')} className="px-1 py-0.5 hover:bg-stone-800 rounded">~</button>
+          {currentPath.split('/').filter(Boolean).map((seg, i) => (
+            <span key={i} className="flex items-center gap-0.5">
+              <span className="text-stone-700">/</span>
+              <button onClick={() => openDirectory(currentPath.split('/').slice(0, i + 1).join('/'))} className="px-1 py-0.5 hover:bg-stone-800 rounded">{seg}</button>
+            </span>
+          ))}
+        </div>
         <button
           onClick={handleOpen}
           disabled={!selected}
-          title={selected ? `Open ${selected.name}` : 'Select a file to open'}
+          title={selected ? (selected.isDirectory ? `Open folder ${selected.name}` : `Open ${selected.name}`) : 'Select a file or folder to open'}
           className="px-2.5 py-1 text-[11px] font-medium text-white bg-red-600 hover:bg-red-700 disabled:bg-stone-800 disabled:text-stone-500 disabled:cursor-not-allowed rounded transition-colors shrink-0"
         >
           Open
@@ -184,6 +202,7 @@ export default function FileExplorer({ currentPath, onFileSelect, onPathChange, 
               depth={0}
               onSelect={setSelected}
               onToggle={toggle}
+              onOpenDir={openDirectory}
               selectedPath={selected?.path}
               expandedPaths={expanded}
             />

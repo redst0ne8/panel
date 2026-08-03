@@ -136,14 +136,13 @@ export default function EditorPage() {
           onWorkspaceChange={setWorkspace}
         />
 
-        {workspace && (
-          <div className="w-64 border-r border-stone-800 shrink-0">
-            <FileExplorer
-              currentPath={workspace}
-              onFileSelect={openFile}
-            />
-          </div>
-        )}
+        <div className="w-64 border-r border-stone-800 shrink-0">
+          <FileExplorer
+            currentPath={workspace}
+            onPathChange={setWorkspace}
+            onFileSelect={openFile}
+          />
+        </div>
 
         <div className="flex-1 flex flex-col min-w-0">
           {activeTab ? (
@@ -177,7 +176,7 @@ export default function EditorPage() {
         <span>UTF-8</span>
         <span className="mx-2">|</span>
         <span>{activeTab?.path.split('.').pop()?.toUpperCase() || 'PLAINTEXT'}</span>
-        <span className="ml-auto truncate">{workspace ? `~/` + workspace : 'No workspace'}</span>
+        <span className="ml-auto truncate">{workspace ? `~/${workspace}` : '~'}</span>
       </div>
     </div>
   )
