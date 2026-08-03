@@ -18,8 +18,8 @@ function TerminalWindowContent() {
   const isLoggedIn = mounted && (!!getSessionToken() || !!getCredentials())
 
   useEffect(() => {
-    if (!isLoggedIn) router.push('/login')
-  }, [isLoggedIn, router])
+    if (mounted && !isLoggedIn) router.push('/login')
+  }, [mounted, isLoggedIn, router])
 
   if (!mounted || !isLoggedIn) {
     return <div className="h-screen w-full flex items-center justify-center bg-stone-950"><div className="animate-spin rounded-full h-8 w-8 border-2 border-red-600 border-t-transparent" /></div>

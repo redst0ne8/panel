@@ -23,8 +23,8 @@ export default function EditorPage() {
   const isLoggedIn = mounted && (!!getSessionToken() || !!getCredentials())
 
   useEffect(() => {
-    if (!isLoggedIn) router.push('/login')
-  }, [isLoggedIn, router])
+    if (mounted && !isLoggedIn) router.push('/login')
+  }, [mounted, isLoggedIn, router])
 
   const openFile = useCallback(async (path) => {
     try {
